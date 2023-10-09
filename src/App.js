@@ -1,51 +1,5 @@
 import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
-const tempMovieData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0133093",
-    Title: "The Matrix",
-    Year: "1999",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt6751668",
-    Title: "Parasite",
-    Year: "2019",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
-  },
-];
-
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
 
 const KEY = "dabffc90";
 
@@ -54,11 +8,15 @@ const average = (arr) =>
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  // const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue);
+  });
   /*
   useEffect(function () {
     console.log("After initial render");
@@ -87,6 +45,7 @@ export default function App() {
 
   function handleAddWatched(movie) {
     setWatched((watched) => [...watched, movie]);
+    // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
 
   function handleDeleteWatched(movieId) {
@@ -94,6 +53,10 @@ export default function App() {
       watched.filter((movie) => movie.imdbID !== movieId)
     );
   }
+
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
 
   useEffect(
     function () {
@@ -465,3 +428,88 @@ function WatchedMovie({ movie, onDeleteWatched }) {
     </li>
   );
 }
+
+// function Hooks() {
+//   return (
+//     <>
+//       <section>
+//         <h1>React hooks</h1>
+//         <p>
+//           Special built-in function that allow us to "hook: into React
+//           internals:
+//         </p>
+//         <p>Apis that expose some internal React funtionality such as:</p>
+//         <ul>
+//           <li>Creating and accessing state from fiber tree</li>
+//           <li>Register side effects in Fiber tree</li>
+//           <li>Manual DOM selections</li>
+//         </ul>
+//         <p>Always start with "use" word</p>
+//         <p>
+//           Enable easy reusing of non-visual logic: we can compose multiple hooks
+//           into our own custom hooks
+//         </p>
+//         <p>
+//           Give function components the ability to own state and run side effects
+//           at different lifecycle points (before v16.8 only available in class
+//           components)
+//         </p>
+//       </section>
+//       <section>
+//         <h1>Built-in Hooks</h1>
+//         <h2>Most Used</h2>
+//         <ul>
+//           <li>useState</li>
+//           <li>useEffect</li>
+//           <li>useReducer</li>
+//           <li>useContext</li>
+//           <li>useContext</li>
+//         </ul>
+//         <h2>Less Used</h2>
+//         <ul>
+//           <li>useRef</li>
+//           <li>useCallback</li>
+//           <li>useMemo</li>
+//           <li>useTransition</li>
+//           <li>useDeferredValue</li>
+//         </ul>
+//         <h2>rest of hooks</h2>
+//         <ul>
+//           <li>useLayoutEffect</li>
+//           <li>useDebugValue</li>
+//           <li>useImperativeHandle</li>
+//           <li>useId</li>
+//         </ul>
+//         <h2>Only for libraries hooks</h2>
+//         <ul>
+//           <li>useSyncExternalStore</li>
+//           <li>useInsertionEffect</li>
+//         </ul>
+//       </section>
+//       <section>
+//         <h1>Hooks Rules</h1>
+//         <ol>
+//           <li>
+//             <h2>Can only be called at the top level</h2>
+//             <p>
+//               we can not call hooks inside if condition, loops , nested
+//               functions or after an early return
+//             </p>
+//             <p>
+//               This is necessary to ensure that hooks are always called in the
+//               same order (hooks rely on this)
+//             </p>
+//           </li>
+//           <li>
+//             <h2>Only call hooks from react functions</h2>
+//             <p>Only call hooks from inside component or custom hooks</p>
+//           </li>
+//         </ol>
+//       </section>
+//       <section>
+//         <h2>Hooks Rely on call order (rule number 2)</h2>
+//         <ul></ul>
+//       </section>
+//     </>
+//   );
+// }
